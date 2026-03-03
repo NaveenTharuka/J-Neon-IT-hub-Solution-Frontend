@@ -13,7 +13,7 @@ export default function ServicesPage() {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/services/all')
+        fetch('https://j-neon-it-hub-backend.onrender.com/api/services/all')
             .then(res => {
                 if (!res.ok) throw new Error('Failed to fetch services')
                 return res.json()
