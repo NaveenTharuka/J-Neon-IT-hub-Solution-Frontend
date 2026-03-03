@@ -22,7 +22,7 @@ export default function ServiceDetailPage() {
 
         const fetchService = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/services/${id}`)
+                const response = await fetch(`https://j-neon-it-hub-backend.onrender.com/api/services/${id}`)
                 if (!response.ok) throw new Error('Failed to fetch service')
                 const data = await response.json()
                 setService(data)

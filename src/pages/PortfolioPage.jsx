@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-const imgCheckmark = "http://localhost:3845/assets/0ccf5697b7ad90af92894ea1fb9741db5ca8be25.svg"
+const imgCheckmark = "https://j-neon-it-hub-backend.onrender.com/assets/0ccf5697b7ad90af92894ea1fb9741db5ca8be25.svg"
 
 const projects = [
     {

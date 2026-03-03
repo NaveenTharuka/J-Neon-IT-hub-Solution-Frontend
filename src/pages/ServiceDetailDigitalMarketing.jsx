@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-const imgCctv = "http://localhost:3845/assets/e4615309020baa67a681be5c16d027096ace2563.png"
-const imgLine = "http://localhost:3845/assets/08b4f1ac92af14156aab55d0d5cad7c8909b045b.svg"
+const imgCctv = "https://j-neon-it-hub-backend.onrender.com/assets/e4615309020baa67a681be5c16d027096ace2563.png"
+const imgLine = "https://j-neon-it-hub-backend.onrender.com/assets/08b4f1ac92af14156aab55d0d5cad7c8909b045b.svg"
 
 const plans = [
     {
