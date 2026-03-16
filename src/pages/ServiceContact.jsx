@@ -34,7 +34,7 @@ export default function ServiceContactPage() {
         setStatus(null)
 
         try {
-            const response = await fetch('https://j-neon-it-hub-backend.onrender.com/contact/post', {
+            const response = await fetch('http://localhost:8080/contact/post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ export default function ServiceContactPage() {
 
                         {/* Form Panel */}
                         <div className="service-contact__form-wrapper">
-                            <form
+                            <form 
                                 className="service-contact__form"
                                 onSubmit={handleSubmit}
                             >
@@ -147,8 +147,8 @@ export default function ServiceContactPage() {
                                     />
                                 </div>
 
-                                <button
-                                    type="submit"
+                                <button 
+                                    type="submit" 
                                     className="service-contact__btn"
                                     disabled={loading}
                                 >

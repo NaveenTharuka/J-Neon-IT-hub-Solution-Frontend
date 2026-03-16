@@ -2,9 +2,9 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
 
-const imgCeo = "https://j-neon-it-hub-backend.onrender.com/assets/78059306baf512b76c441d11a13d79452686de16.png"
-const imgCto = "https://j-neon-it-hub-backend.onrender.com/assets/eba13ed5e06c6a80ea4e6df07691c7e943c9eb47.png"
-const imgCoo = "https://j-neon-it-hub-backend.onrender.com/assets/335492fa8e12da0d169c9e44e4dada3f78facad2.png"
+const imgCeo = "http://localhost:3845/assets/78059306baf512b76c441d11a13d79452686de16.png"
+const imgCto = "http://localhost:3845/assets/eba13ed5e06c6a80ea4e6df07691c7e943c9eb47.png"
+const imgCoo = "http://localhost:3845/assets/335492fa8e12da0d169c9e44e4dada3f78facad2.png"
 
 const timeline = [
     { year: '2015', title: 'Inception', desc: 'Founded in a small garage with a singular focus on high-performance server architecture.', side: 'left' },
@@ -14,11 +14,11 @@ const timeline = [
 ]
 
 const leadership = [
-    {
-        name: 'Anton Jaan Jenushan Miranda',
-        title: 'FOUNDER & CEO',
-        img: imgCeo,
-        desc: 'Visionary architect with 15+ years in high-scale infrastructure.'
+    { 
+        name: 'Anton Jaan Jenushan Miranda', 
+        title: 'FOUNDER & CEO', 
+        img: imgCeo, 
+        desc: 'Visionary architect with 15+ years in high-scale infrastructure.' 
     }
 ]
 
