@@ -1,11 +1,11 @@
-import axios from 'axios';
+// ✅ FIX: Import your configured axios instance
+import { api } from './api';  // Adjust the path as needed
 
-// Ensure this matches your backend endpoint
-const API_URL = '/api/portfolio-items';
-
+// Remove the hardcoded API_URL - use the baseURL from api instance
 export const getPortfolioItems = async () => {
     try {
-        const response = await axios.get(API_URL);
+        // Use api instance instead of axios directly
+        const response = await api.get('/api/portfolio-items');
         return response.data;
     } catch (error) {
         console.error("Error fetching portfolio items", error);
@@ -15,7 +15,7 @@ export const getPortfolioItems = async () => {
 
 export const getPortfolioItemById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`);
+        const response = await api.get(`/api/portfolio-items/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching portfolio item with id ${id}`, error);
@@ -25,7 +25,7 @@ export const getPortfolioItemById = async (id) => {
 
 export const createPortfolioItem = async (portfolioData) => {
     try {
-        const response = await axios.post(API_URL, portfolioData);
+        const response = await api.post('/api/portfolio-items', portfolioData);
         return response.data;
     } catch (error) {
         console.error("Error creating portfolio item", error);
@@ -35,7 +35,7 @@ export const createPortfolioItem = async (portfolioData) => {
 
 export const updatePortfolioItem = async (id, portfolioData) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, portfolioData);
+        const response = await api.put(`/api/portfolio-items/${id}`, portfolioData);
         return response.data;
     } catch (error) {
         console.error(`Error updating portfolio item with id ${id}`, error);
@@ -57,7 +57,7 @@ export const deletePortfolioItem = async (id) => {
             console.warn(`Could not delete associated images for portfolio item ${id}`, imgError);
         }
 
-        await axios.delete(`${API_URL}/${id}`);
+        await api.delete(`/api/portfolio-items/${id}`);
     } catch (error) {
         console.error(`Error deleting portfolio item with id ${id}`, error);
         throw error;
@@ -66,11 +66,9 @@ export const deletePortfolioItem = async (id) => {
 
 // --- Portfolio Images ---
 
-const IMAGE_API_URL = '/api/admin/portfolio-items';
-
 export const getPortfolioImages = async (portfolioItemId) => {
     try {
-        const response = await axios.get(`${IMAGE_API_URL}/${portfolioItemId}/images`);
+        const response = await api.get(`/api/admin/portfolio-items/${portfolioItemId}/images`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching images for portfolio item ${portfolioItemId}`, error);
@@ -80,7 +78,7 @@ export const getPortfolioImages = async (portfolioItemId) => {
 
 export const addPortfolioImage = async (portfolioItemId, imageData) => {
     try {
-        const response = await axios.post(`${IMAGE_API_URL}/${portfolioItemId}/images`, imageData);
+        const response = await api.post(`/api/admin/portfolio-items/${portfolioItemId}/images`, imageData);
         return response.data;
     } catch (error) {
         console.error(`Error adding image to portfolio item ${portfolioItemId}`, error);
@@ -89,9 +87,8 @@ export const addPortfolioImage = async (portfolioItemId, imageData) => {
 };
 
 export const updatePortfolioImage = async (portfolioItemId, imageId, imageData) => {
-    // Note: The backend PUT endpoint is actually /api/admin/portfolio-items/{portfolioItemId}/images/{imageId}
     try {
-        const response = await axios.put(`${IMAGE_API_URL}/${portfolioItemId}/images/${imageId}`, imageData);
+        const response = await api.put(`/api/admin/portfolio-items/${portfolioItemId}/images/${imageId}`, imageData);
         return response.data;
     } catch (error) {
         console.error(`Error updating image ${imageId}`, error);
@@ -101,7 +98,7 @@ export const updatePortfolioImage = async (portfolioItemId, imageId, imageData) 
 
 export const deletePortfolioImage = async (portfolioItemId, imageId) => {
     try {
-        await axios.delete(`${IMAGE_API_URL}/${portfolioItemId}/images/${imageId}`);
+        await api.delete(`/api/admin/portfolio-items/${portfolioItemId}/images/${imageId}`);
     } catch (error) {
         console.error(`Error deleting image ${imageId}`, error);
         throw error;
