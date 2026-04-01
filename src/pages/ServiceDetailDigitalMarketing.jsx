@@ -33,8 +33,9 @@ export default function ServiceDetailDigitalMarketing() {
             <main className="page">
                 <section className="svc-detail-hero">
                     <h1 className="svc-detail-hero__title">
-                        <span>DIGITAL</span>
-                        <br />MARKETING
+                        <span className="title-first">DIGITAL</span>
+                        <br />
+                        <span className="title-rest">MARKETING</span>
                     </h1>
                     <p className="svc-detail-hero__desc">
                         Digital marketing is our specialty. We create data-driven campaigns that grow your reach, improve

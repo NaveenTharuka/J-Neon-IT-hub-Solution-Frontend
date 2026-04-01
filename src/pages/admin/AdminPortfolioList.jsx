@@ -18,6 +18,7 @@ export default function AdminPortfolioList() {
         setLoading(true);
         try {
             const data = await getPortfolioItems();
+            console.log("RAW RESPONSE:", data);
 
             // Map over each item to fetch its image array
             const projectsWithImages = await Promise.all((data || []).map(async (project) => {
@@ -86,11 +87,11 @@ export default function AdminPortfolioList() {
                     {projects.map((project) => (
                         <div key={project.id || project.title} className={styles.card}>
                             <div className={styles.imageContainer}>
-                                {/* <img
+                                <img
                                     src={project.imageUrl || 'https://via.placeholder.com/400x200?text=' + encodeURIComponent(project.title || 'Project')}
                                     alt={project.title}
                                     className={styles.projectImage}
-                                /> */}
+                                />
                                 <span className={styles.categoryBadge}>{project.summary || 'Portfolio'}</span>
                             </div>
 
