@@ -17,17 +17,25 @@ export default function ServicesPage() {
         const fetchData = async () => {
             try {
                 const res = await fetchAllServices();
-                setServices(res);
-                setLoading(false);
+
+                const data = res?.data || res;
+
+                const activeServices = Array.isArray(data)
+                    ? data.filter(item => item.active === true)
+                    : [];
+
+                setServices(activeServices);
+
             } catch (error) {
-                setError(error);
                 console.log(error);
+                setError(error);
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [])
+    }, []);
 
     return (
         <>

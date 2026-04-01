@@ -16,9 +16,15 @@ import AdminPortfolioList from './pages/admin/AdminPortfolioList'
 import AdminPortfolioForm from './pages/admin/AdminPortfolioForm'
 import AdminUsers from './pages/admin/UserManagement'
 
-import AdminEditService from './pages/admin/services/AdminEditService'
 import AdminAddService from './pages/admin/services/AdminAddService'
 import AdminServicesList from './pages/admin/services/AdminServicesList'
+
+import AdminInquiries from './pages/admin/AdminInquiries'
+import AdminEditService from './pages/admin/services/AdminEditService'
+import AdminMedia from './pages/admin/AdminMedia'
+
+import AdminServicePlansList from "./pages/admin/services/AdminServicePlansList";
+import AdminServicePlansForm from "./pages/admin/services/AdminServicePlansForm";
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -52,7 +58,16 @@ export default function App() {
         <Route path="/admin/services/add" element={<AdminLayout><AdminAddService /></AdminLayout>} />
         <Route path="/admin/services/edit/:id" element={<AdminLayout><AdminEditService /></AdminLayout>} />
 
-        <Route path="/admin/users" element={<AdminLayout><AdminUsers/></AdminLayout>} />
+        <Route path="/admin/inquiries" element={<AdminLayout><AdminInquiries /></AdminLayout>} />
+        <Route path="/admin/users" element={<AdminLayout><AdminUsers /></AdminLayout>} />
+        <Route path="/admin/media" element={<AdminLayout><AdminMedia /></AdminLayout>} />+
+
+        <Route path="/admin/services/:serviceId/plans/add" element={<AdminLayout><AdminServicePlansForm /></AdminLayout>} />
+        <Route
+          path="/admin/services/:serviceId/plans/edit/:planId"
+          element={<AdminLayout><AdminServicePlansForm /></AdminLayout>}
+        />
+        <Route path="/admin/services/:serviceId/plans" element={<AdminLayout><AdminServicePlansList /></AdminLayout>} />
       </Routes>
     </>
   )

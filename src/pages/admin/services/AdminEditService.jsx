@@ -32,7 +32,7 @@ const AdminEditService = () => {
                     setSlug(data.slug || '');
                     setShortDescription(data.shortDescription || '');
                     setSortOrder(data.sortOrder || 0);
-                    setIsActive(data.isActive !== undefined ? data.isActive : true);
+                    setIsActive(Boolean(data.isActive));
                     // Features placeholder if your backend supports it later
                     if (data.features) setFeatures(data.features.map((f, i) => ({ id: i, text: f })));
                 } else {
@@ -154,17 +154,6 @@ const AdminEditService = () => {
                             rows={4}
                             required
                         ></textarea>
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Sort Order</label>
-                        <input
-                            type="number"
-                            value={sortOrder}
-                            onChange={(e) => setSortOrder(Number(e.target.value))}
-                            placeholder="e.g. 1"
-                            required
-                        />
                     </div>
 
                     <div className={styles.formGroup}>
