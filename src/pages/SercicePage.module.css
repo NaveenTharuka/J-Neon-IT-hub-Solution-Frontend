@@ -1,0 +1,162 @@
+/* Quarter Circle styling - added to card, removed corner image */
+.svcCard {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.svcCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Quarter circle - positioned at top-right corner */
+.svcCardQuarterCircle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, transparent 50%, rgba(0, 123, 255, 0.15) 50%);
+    border-radius: 0 0 0 100%;
+    pointer-events: none;
+    z-index: 0;
+    transition: all 0.3s ease;
+}
+
+/* Optional: Quarter circle hover effect */
+.svcCard:hover .svcCardQuarterCircle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, transparent 50%, rgba(0, 123, 255, 0.25) 50%);
+}
+
+/* Alternative quarter circle positions if needed */
+.svcCardQuarterCircleTopLeft {
+    top: 0;
+    left: 0;
+    right: auto;
+    border-radius: 0 0 100% 0;
+    background: linear-gradient(225deg, transparent 50%, rgba(0, 123, 255, 0.15) 50%);
+}
+
+.svcCardQuarterCircleBottomRight {
+    bottom: 0;
+    right: 0;
+    top: auto;
+    border-radius: 100% 0 0 0;
+    background: linear-gradient(315deg, transparent 50%, rgba(0, 123, 255, 0.15) 50%);
+}
+
+.svcCardQuarterCircleBottomLeft {
+    bottom: 0;
+    left: 0;
+    top: auto;
+    right: auto;
+    border-radius: 0 100% 0 0;
+    background: linear-gradient(45deg, transparent 50%, rgba(0, 123, 255, 0.15) 50%);
+}
+
+/* Ensure content appears above quarter circle */
+.svcCardIconWrap,
+.svcCardBody {
+    position: relative;
+    z-index: 1;
+}
+
+/* Your existing styles below */
+.servicesPageHero {
+    /* Your hero styles */
+}
+
+.servicesPageHeroContent {
+    /* Your content styles */
+}
+
+.servicesPageHeroTitle {
+    /* Your title styles */
+}
+
+.servicesPageHeroSubtitle {
+    /* Your subtitle styles */
+}
+
+.servicesPageTagline {
+    /* Your tagline styles */
+}
+
+.servicesPageTaglineHeading {
+    /* Your heading styles */
+}
+
+.gradientText {
+    /* Your gradient text styles */
+}
+
+.servicesPageTaglineSub {
+    /* Your subtext styles */
+}
+
+.servicesPageGrid {
+    /* Your grid styles */
+}
+
+.servicesPageGridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.loadingState {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.svcCardIcon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+}
+
+.svcCardTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.svcCardDesc {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.svcCardCta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: gap 0.3s ease;
+}
+
+.svcCardCta:hover {
+    gap: 0.75rem;
+}
+
+.svcCardCta svg {
+    transition: transform 0.3s ease;
+}
+
+.svcCardCta:hover svg {
+    transform: translateX(3px);
+}

@@ -69,17 +69,9 @@ export default function ServicesPage() {
                             <div key={service.id} className="svc-card">
                                 <div
                                     className="svc-card__ellipse"
-                                    style={{ backgroundImage: `url(${imgEllipse})` }}
                                     aria-hidden="true"
                                 />
-                                <div className="svc-card__icon-wrap">
-                                    <img
-                                        src={service.icon || defaultIcon}
-                                        alt={service.title}
-                                        className="svc-card__icon"
-                                        onError={e => { e.target.src = defaultIcon }}
-                                    />
-                                </div>
+
                                 <div className="svc-card__body">
                                     <h3 className="svc-card__title">{service.title}</h3>
                                     <p className="svc-card__desc">{service.shortDescription}</p>

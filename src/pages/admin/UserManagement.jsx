@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import styles from "./adminUsers.module.css";
+import { api } from '../../services/api'
 
 export default function AdminUsers() {
 
@@ -15,12 +16,8 @@ export default function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8080/admin/users", {
-        credentials: "include"
-      });
-
-      const data = await res.json();
-      setUsers(data);
+      const response = await api.get('/admin/users');
+      setUsers(response.data);
     } catch (err) {
       console.error("Failed to load users", err);
     } finally {
@@ -37,7 +34,7 @@ export default function AdminUsers() {
   const createUser = async () => {
     // Clear previous error
     setEmailError("");
-    
+
     // Check if email is empty
     if (!email.trim()) {
       setEmailError("Email is required");
@@ -93,7 +90,7 @@ export default function AdminUsers() {
 
   return (
     <div className={styles.container}>
-      
+
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>User Management</h1>

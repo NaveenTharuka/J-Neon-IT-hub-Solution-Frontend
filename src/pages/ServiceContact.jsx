@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { api } from '../services/api'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
@@ -34,21 +35,11 @@ export default function ServiceContactPage() {
         setStatus(null)
 
         try {
-            const response = await fetch('http://localhost:8080/contact/post', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    message: formData.message
-                })
+            const response = await api.post('/contact/post', {
+                name: formData.name,
+                email: formData.email,
+                message: formData.message
             })
-
-            if (!response.ok) {
-                throw new Error('Failed to send')
-            }
 
             setStatus('success')
             setFormData({
@@ -95,7 +86,7 @@ export default function ServiceContactPage() {
 
                         {/* Form Panel */}
                         <div className="service-contact__form-wrapper">
-                            <form 
+                            <form
                                 className="service-contact__form"
                                 onSubmit={handleSubmit}
                             >
@@ -147,8 +138,8 @@ export default function ServiceContactPage() {
                                     />
                                 </div>
 
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="service-contact__btn"
                                     disabled={loading}
                                 >

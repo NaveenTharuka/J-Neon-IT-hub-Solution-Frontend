@@ -61,8 +61,7 @@ export default function Services({ limit, showViewAll }) {
     return (
         <section className="services" id="services">
             <div className="services__container">
-                <div className="bg-watermark" style={{ top: '25%' }}>INOVATION</div>
-                <div className="services__header fade-in" style={{ position: 'relative', zIndex: 2 }}>
+                <div className="services__header fade-in">
                     <h2 className="services__title">
                         OUR <span>SERVICES</span>
                     </h2>

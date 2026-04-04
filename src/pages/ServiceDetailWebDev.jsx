@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import reactLogo from '../assets/image.png'
+import { fetchAllServices, fetchServicePlans } from '../services/services.api'
 
 export default function ServiceDetailWebDev() {
     const { slug } = useParams()
@@ -15,25 +16,22 @@ export default function ServiceDetailWebDev() {
         const fetchServiceAndPlans = async () => {
             try {
                 setLoading(true)
-                
-                // First, fetch all services to find the one with matching slug
-                const servicesResponse = await fetch('http://localhost:8080/api/services/all')
-                if (!servicesResponse.ok) throw new Error('Failed to fetch services')
-                const allServices = await servicesResponse.json()
-                
-                // Find service by slug (if slug is actually a slug, not an ID)
-                // For now, treat slug as ID since that's what you're passing
+
+                // Fetch all services using the imported function
+                const allServices = await fetchAllServices()
+
+                // Find service by slug (or ID)
                 let serviceId = slug
                 let foundService = null
-                
-                // Try to find service by ID first (since your URL might be passing ID)
+
+                // Try to find service by ID first
                 foundService = allServices.find(s => s.id === slug)
-                
+
                 if (foundService) {
                     serviceId = foundService.id
                     setService(foundService)
                 } else {
-                    // If not found by ID, try to find by slug (if your services have slug field)
+                    // If not found by ID, try to find by slug
                     foundService = allServices.find(s => s.slug === slug)
                     if (foundService) {
                         serviceId = foundService.id
@@ -43,15 +41,14 @@ export default function ServiceDetailWebDev() {
                     }
                 }
 
-                // Fetch plans for this service
+                // Fetch plans for this service using the imported function
                 if (serviceId) {
-                    const plansResponse = await fetch(`http://localhost:8080/api/service/plans/serviceId/${serviceId}`)
-                    if (!plansResponse.ok) {
-                        console.warn('Failed to fetch plans:', plansResponse.status)
-                        setPlans([])
-                    } else {
-                        const plansData = await plansResponse.json()
+                    try {
+                        const plansData = await fetchServicePlans(serviceId)
                         setPlans(plansData || [])
+                    } catch (err) {
+                        console.warn('Failed to fetch plans:', err)
+                        setPlans([])
                     }
                 }
             } catch (err) {
@@ -75,14 +72,14 @@ export default function ServiceDetailWebDev() {
     // Helper function to format price
     const formatPrice = (price, currency, billingPeriod) => {
         if (!price && price !== 0) return 'Contact for pricing'
-        
+
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency || 'USD',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         })
-        
+
         const formattedPrice = formatter.format(price)
         return billingPeriod ? `${formattedPrice}/${billingPeriod}` : formattedPrice
     }
@@ -108,8 +105,8 @@ export default function ServiceDetailWebDev() {
             <>
                 <Navbar />
                 <main className="page">
-                    <div className="loading-container" style={{ 
-                        textAlign: 'center', 
+                    <div className="loading-container" style={{
+                        textAlign: 'center',
                         padding: '100px 20px',
                         fontSize: '18px',
                         color: 'var(--color-text-muted)'
@@ -128,14 +125,14 @@ export default function ServiceDetailWebDev() {
             <>
                 <Navbar />
                 <main className="page">
-                    <div className="error-container" style={{ 
-                        textAlign: 'center', 
+                    <div className="error-container" style={{
+                        textAlign: 'center',
                         padding: '100px 20px',
                         color: '#ef4444'
                     }}>
                         <h2>Error loading service</h2>
                         <p>{error || 'Service not found'}</p>
-                        <Link to="/services" style={{ 
+                        <Link to="/services" style={{
                             color: 'var(--color-teal)',
                             textDecoration: 'underline',
                             marginTop: '20px',
@@ -159,18 +156,7 @@ export default function ServiceDetailWebDev() {
             <main className="page">
                 <section className="svc-detail-hero">
                     <h1 className="svc-detail-hero__title">
-                        {(() => {
-                            const raw = service?.title?.toUpperCase() || 'SERVICE';
-                            const parts = raw.split(' ');
-                            if (parts.length === 1) return <span className="title-first">{parts[0]}</span>;
-                            return (
-                                <>
-                                    <span className="title-first">{parts[0]}</span>
-                                    <br />
-                                    <span className="title-rest">{parts.slice(1).join(' ')}</span>
-                                </>
-                            );
-                        })()}
+                        <span>{service?.title?.toUpperCase() || 'SERVICE'}</span>
                     </h1>
                     <p className="svc-detail-hero__desc">{service?.shortDescription}</p>
                     {service?.longDescription && (
@@ -179,12 +165,10 @@ export default function ServiceDetailWebDev() {
                 </section>
 
                 <section className="svc-detail-plans">
-                    <div className="svc-detail-plans__tagline">
-                        <h2 className="svc-detail-plans__heading">
-                            {hasPlans ? 'Pricing Plans' : 'Service Information'}
-                        </h2>
-                    </div>
-                    
+                    <h2 className="svc-detail-plans__title">
+                        {hasPlans ? 'Pricing Plans' : 'Service Information'}
+                    </h2>
+
                     {!hasPlans && !loading && (
                         <div style={{ textAlign: 'center', padding: '60px 20px' }}>
                             <p style={{ color: 'var(--color-text-muted)', marginBottom: '20px' }}>
@@ -204,10 +188,10 @@ export default function ServiceDetailWebDev() {
                                 .map((plan) => {
                                     const features = parseFeatures(plan.features)
                                     const price = formatPrice(plan.price, plan.currency, plan.billingPeriod)
-                                    
+
                                     return (
-                                        <div 
-                                            key={plan.id || plan.planName} 
+                                        <div
+                                            key={plan.id || plan.planName}
                                             className={`plan-card ${plan.isFeatured ? 'featured-plan' : ''}`}
                                             style={plan.isFeatured ? {
                                                 border: '2px solid var(--color-teal)',
@@ -232,11 +216,11 @@ export default function ServiceDetailWebDev() {
                                                     Featured
                                                 </div>
                                             )}
-                                            
+
                                             <div className="plan-card__header">
-                                                <img 
-                                                    src={service?.icon || reactLogo} 
-                                                    alt={plan.planName} 
+                                                <img
+                                                    src={service?.icon || reactLogo}
+                                                    alt={plan.planName}
                                                     className="plan-card__icon"
                                                     style={{ width: '48px', height: '48px', objectFit: 'contain' }}
                                                     onError={e => e.target.src = reactLogo}
@@ -253,7 +237,7 @@ export default function ServiceDetailWebDev() {
                                                     </p>
                                                 )}
                                             </div>
-                                            
+
                                             {plan.description && (
                                                 <p className="plan-card__description" style={{
                                                     fontSize: '14px',
@@ -265,14 +249,14 @@ export default function ServiceDetailWebDev() {
                                                     {plan.description}
                                                 </p>
                                             )}
-                                            
+
                                             <div className="plan-card__body">
                                                 {features.length > 0 && (
                                                     <ul className="plan-card__features">
                                                         {features.map((feature, index) => (
                                                             <li key={index} className="plan-card__feature">
                                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
-                                                                    <path d="M13.333 4L6 11.333L2.667 8" strokeLinecap="round" strokeLinejoin="round"/>
+                                                                    <path d="M13.333 4L6 11.333L2.667 8" strokeLinecap="round" strokeLinejoin="round" />
                                                                 </svg>
                                                                 {feature}
                                                             </li>
@@ -280,10 +264,10 @@ export default function ServiceDetailWebDev() {
                                                     </ul>
                                                 )}
                                             </div>
-                                            
+
                                             <div className="plan-card__footer">
-                                                <Link 
-                                                    to={`/services/consultation?plan=${plan.id}&service=${service?.id}`} 
+                                                <Link
+                                                    to={`/services/consultation?plan=${plan.id}&service=${service?.id}`}
                                                     className="plan-card__cta"
                                                     state={{ plan, service }}
                                                 >

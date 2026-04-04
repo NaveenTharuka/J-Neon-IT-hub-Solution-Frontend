@@ -34,9 +34,8 @@ export default function Portfolio({ limit, showViewAll }) {
     const displayed = limit ? sourceData.slice(0, limit) : sourceData;
 
     return (
-        <section className="portfolio" id="portfolio" style={{ position: 'relative' }}>
-            <div className="bg-watermark">PORTFOLIO</div>
-            <div className="portfolio__container" style={{ position: 'relative', zIndex: 2 }}>
+        <section className="portfolio" id="portfolio">
+            <div className="portfolio__container">
                 <h2 className="portfolio__title fade-in">OUR <span>PORTFOLIO</span></h2>
                 <p className="portfolio__subtitle fade-in">
                     Showcase of our digital craftsmanship. Where complex problems meet elegant, high-performance solutions.
