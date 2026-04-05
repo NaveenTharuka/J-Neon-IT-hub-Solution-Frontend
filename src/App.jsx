@@ -26,6 +26,9 @@ import AdminMedia from './pages/admin/AdminMedia'
 import AdminServicePlansList from "./pages/admin/services/AdminServicePlansList";
 import AdminServicePlansForm from "./pages/admin/services/AdminServicePlansForm";
 
+import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
+
+
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => {
