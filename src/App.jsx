@@ -67,6 +67,8 @@ export default function App() {
           path="/admin/services/:serviceId/plans/edit/:planId"
           element={<AdminLayout><AdminServicePlansForm /></AdminLayout>}
         />
+        <Route path="/admin/analytics" element={<AdminLayout><AnalyticsDashboard /></AdminLayout>} />
+
         <Route path="/admin/services/:serviceId/plans" element={<AdminLayout><AdminServicePlansList /></AdminLayout>} />
       </Routes>
     </>
