@@ -48,14 +48,7 @@ export default function AdminUsers() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/admin/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email })
-      });
-
-      if (!res.ok) throw new Error("Failed to create user");
+      await api.post("/admin/create", { email });
 
       setEmail("");
       setEmailError(""); // Clear error on success
@@ -77,10 +70,7 @@ export default function AdminUsers() {
     if (!window.confirm("Delete this user?")) return;
 
     try {
-      await fetch(`http://localhost:8080/admin/delete/${id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
+      await api.delete(`/admin/delete/${id}`);
 
       setUsers(users.filter((u) => u.id !== id));
     } catch (err) {

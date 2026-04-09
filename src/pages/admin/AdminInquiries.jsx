@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Mail, Phone, Trash2 } from 'lucide-react';
+import { fetchAllInquiries, updateInquiryStatus, deleteInquiry } from '../../services/inquiriesService';
 import styles from './adminInquiries.module.css';
 
 export default function AdminInquiries() {
@@ -26,13 +27,7 @@ const sortedInquiries = [...inquiries].sort((a, b) => {
 
   const fetchInquiries = async () => {
     try {
-      const res = await fetch("http://localhost:8080/contact/get-all", {
-        credentials: "include"
-      });
-
-      if (!res.ok) throw new Error("Server error");
-
-      const data = await res.json();
+      const data = await fetchAllInquiries();
 
       if (Array.isArray(data)) {
         setInquiries(data);
@@ -48,18 +43,9 @@ const sortedInquiries = [...inquiries].sort((a, b) => {
     }
   };
 
-  const updateInquiryStatus = async (id, status) => {
+  const handleStatusUpdate = async (id, status) => {
     try {
-      const res = await fetch("http://localhost:8080/contact/tags", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ id, status })
-      });
-
-      if (!res.ok) throw new Error("Failed to update");
-
-      const updated = await res.json();
+      const updated = await updateInquiryStatus(id, status);
 
       // update list instantly
       setInquiries(prev =>
@@ -74,12 +60,7 @@ const sortedInquiries = [...inquiries].sort((a, b) => {
 
 const handleDelete = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8080/contact/delete/${id}`, {
-      method: "DELETE",
-      credentials: "include"
-    });
-
-    if (!res.ok) throw new Error("Failed to delete");
+    await deleteInquiry(id);
 
     // remove from UI instantly
     setInquiries(prev => prev.filter(i => i.id !== id));
@@ -161,7 +142,7 @@ const handleDelete = async (id) => {
                   className={styles.actionSelect}
                   value={selectedInquiry.status}
                   onChange={(e) =>
-                    updateInquiryStatus(selectedInquiry.id, e.target.value)
+                    handleStatusUpdate(selectedInquiry.id, e.target.value)
                   }
                 >
                   <option value="new">Mark as New</option>

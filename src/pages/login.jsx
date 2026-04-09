@@ -1,3 +1,4 @@
+import { api } from '../services/api';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import styles from './login.module.css'
@@ -7,7 +8,8 @@ const googleLogo = "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%
 export default function LoginPage() {
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/google"
+        const backendUrl = api.defaults.baseURL || 'https://j-neon-it-hub-backend.onrender.com';
+        window.location.href = `${backendUrl}/oauth2/authorization/google`
     }
 
     return (

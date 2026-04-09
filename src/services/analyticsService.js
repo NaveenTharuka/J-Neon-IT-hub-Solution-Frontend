@@ -4,10 +4,20 @@ import { api } from './api';
 
 const API_BASE_URL = api.defaults.baseURL + '/api/analytics';
 
+// Helper function to convert date parameter (handles "today" as a special case)
+const formatDateParam = (date) => {
+  if (date === 'today') {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  }
+  return date;
+};
+
 export const fetchOverviewStats = async (startDate, endDate) => {
   try {
+    const formattedEnd = formatDateParam(endDate);
     const response = await fetch(
-      `${API_BASE_URL}/overview?startDate=${startDate}&endDate=${endDate}`,
+      `${API_BASE_URL}/overview?startDate=${startDate}&endDate=${formattedEnd}`,
       { credentials: 'include' }
     );
     if (!response.ok) throw new Error('Failed to fetch overview stats');
@@ -20,8 +30,9 @@ export const fetchOverviewStats = async (startDate, endDate) => {
 
 export const fetchDailyTraffic = async (startDate, endDate) => {
   try {
+    const formattedEnd = formatDateParam(endDate);
     const response = await fetch(
-      `${API_BASE_URL}/daily-traffic?startDate=${startDate}&endDate=${endDate}`,
+      `${API_BASE_URL}/daily-traffic?startDate=${startDate}&endDate=${formattedEnd}`,
       { credentials: 'include' }
     );
     if (!response.ok) throw new Error('Failed to fetch daily traffic');
@@ -34,17 +45,17 @@ export const fetchDailyTraffic = async (startDate, endDate) => {
 
 export const fetchTopServices = async (startDate, endDate) => {
   try {
+    const formattedEnd = formatDateParam(endDate);
     const response = await fetch(
-      `${API_BASE_URL}/top-services?startDate=${startDate}&endDate=${endDate}`,
+      `${API_BASE_URL}/top-services?startDate=${startDate}&endDate=${formattedEnd}`,
       { credentials: 'include' }
     );
     if (!response.ok) throw new Error('Failed to fetch top services');
     const data = await response.json();
 
     // Fetch actual service names from your database
-    // Adjust this endpoint based on your actual service API
     try {
-      const titlesResponse = await fetch('http://localhost:8080/api/services/all', {
+      const titlesResponse = await fetch(api.defaults.baseURL + '/api/services/all', {
         credentials: 'include'
       });
 
@@ -100,8 +111,9 @@ export const fetchTopServices = async (startDate, endDate) => {
 
 export const fetchTrafficSources = async (startDate, endDate) => {
   try {
+    const formattedEnd = formatDateParam(endDate);
     const response = await fetch(
-      `${API_BASE_URL}/traffic-sources?startDate=${startDate}&endDate=${endDate}`,
+      `${API_BASE_URL}/traffic-sources?startDate=${startDate}&endDate=${formattedEnd}`,
       { credentials: 'include' }
     );
     if (!response.ok) throw new Error('Failed to fetch traffic sources');
@@ -114,7 +126,8 @@ export const fetchTrafficSources = async (startDate, endDate) => {
 
 export const fetchInquiryCount = async (startDate, endDate) => {
   try {
-    const response = await fetch('http://localhost:8080/contact/get-all', {
+    const formattedEnd = formatDateParam(endDate);
+    const response = await fetch(api.defaults.baseURL + '/api/inquiries/all', {
       credentials: 'include'
     });
     if (!response.ok) throw new Error('Failed to fetch inquiries');
@@ -123,7 +136,7 @@ export const fetchInquiryCount = async (startDate, endDate) => {
     const filteredInquiries = inquiries.filter(inquiry => {
       const inquiryDate = new Date(inquiry.createdAt);
       const start = new Date(startDate);
-      const end = endDate === 'today' ? new Date() : new Date(endDate);
+      const end = new Date(formattedEnd);
       return inquiryDate >= start && inquiryDate <= end;
     });
 
