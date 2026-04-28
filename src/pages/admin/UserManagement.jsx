@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import styles from "./adminUsers.module.css";
-import { api } from '../../services/api'
+import { api } from "../../services/api";
 
 export default function AdminUsers() {
 
@@ -16,8 +16,11 @@ export default function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get('/admin/users');
-      setUsers(response.data);
+      const res = await api.get("api/admin/users", {
+        withCredentials: true
+      });
+
+      setUsers(res.data);
     } catch (err) {
       console.error("Failed to load users", err);
     } finally {
@@ -48,7 +51,9 @@ export default function AdminUsers() {
     }
 
     try {
-      await api.post("/admin/create", { email });
+      await api.post("/admin/create", { email }, {
+        withCredentials: true
+      });
 
       setEmail("");
       setEmailError(""); // Clear error on success
@@ -70,7 +75,9 @@ export default function AdminUsers() {
     if (!window.confirm("Delete this user?")) return;
 
     try {
-      await api.delete(`/admin/delete/${id}`);
+      await api.delete(`api/admin/delete/${id}`, {
+        withCredentials: true
+      });
 
       setUsers(users.filter((u) => u.id !== id));
     } catch (err) {
