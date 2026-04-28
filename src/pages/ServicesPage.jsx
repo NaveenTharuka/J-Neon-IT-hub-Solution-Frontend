@@ -4,11 +4,13 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import reactLogo from '../assets/image.png'
 import { fetchAllServices, fetchServiceById } from '../services/services.api'
+import useScrollFadeIn from '../hooks/useScrollFadeIn'
 
 const imgEllipse = reactLogo
 const defaultIcon = reactLogo
 
 export default function ServicesPage() {
+    useScrollFadeIn();
     const [services, setServices] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -42,7 +44,7 @@ export default function ServicesPage() {
             <Navbar />
             <main className="page">
                 <section className="services-page-hero">
-                    <div className="services-page-hero__content">
+                    <div className="services-page-hero__content fade-in">
                         <h1 className="services-page-hero__title">
                             OUR <span>SERVICES</span>
                         </h1>
@@ -50,22 +52,30 @@ export default function ServicesPage() {
                             Choose from our range of solutions. Each plan comes with flexible pricing options.
                         </p>
                     </div>
+
+                    <div className="fade-in" style={{
+                        display: error ? 'none' : 'block',
+                        marginTop: '50px'
+                    }}>
+                        <h2 className="services-page-tagline__heading">
+                            Choose what's <span className="gradient-text">best</span> for you
+                        </h2>
+                        <p className="services-page-tagline__sub">
+                            Flexible packages designed for startups, growing businesses, and enterprise-grade applications.
+                        </p>
+                    </div>
                 </section>
 
-                <div className="services-page-tagline">
-                    <h2 className="services-page-tagline__heading">
-                        Choose what's <span className="gradient-text">best</span> for you
-                    </h2>
-                    <p className="services-page-tagline__sub">
-                        Flexible packages designed for startups, growing businesses, and enterprise-grade applications.
-                    </p>
-                </div>
 
-                <section className="services-page-grid">
-                    <div className="services-page-grid__container">
+
+                <section style={{
+                    display: error ? 'none' : 'block'
+                }}>
+                    <div className="services-page-grid__container fade-in" style={{ marginBottom: '50px' }}>
+
                         {loading && <div className="loading-state">Loading services...</div>}
-                        {/* {error && <div className="error-state" style={{ color: 'red' }}>Error: {error}</div>} */}
-                        {!loading && services.map(service => (
+
+                        {!loading && !error && services.map(service => (
                             <div key={service.id} className="svc-card">
                                 <div
                                     className="svc-card__ellipse"
@@ -90,6 +100,44 @@ export default function ServicesPage() {
                         ))}
                     </div>
                 </section>
+
+
+                {error && (
+                    <div style={{
+                        position: 'relative',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 9999,
+                        pointerEvents: 'none'
+                    }}>
+                        <div style={{
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            backdropFilter: 'blur(10px)',
+                            borderRadius: '16px',
+                            padding: '24px 32px',
+                            textAlign: 'center',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                            maxWidth: '400px',
+                            margin: '20px'
+                        }}>
+                            <p style={{
+                                color: 'white',
+                                margin: 0,
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
+                            }}>
+                                Error: {typeof error === 'string' ? error : error?.message || 'Something went wrong'}
+                            </p>
+                        </div>
+                    </div>
+                )}
             </main>
             <Footer />
         </>

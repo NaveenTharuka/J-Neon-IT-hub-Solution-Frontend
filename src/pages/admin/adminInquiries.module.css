@@ -1,4 +1,3 @@
-
 .container {
   display: flex;
   flex-direction: column;
@@ -60,13 +59,18 @@
 }
 
 /* Scrollbar tweaks for panel */
-.inquiryList::-webkit-scrollbar, .detailsPanel::-webkit-scrollbar {
+.inquiryList::-webkit-scrollbar,
+.detailsPanel::-webkit-scrollbar {
   width: 6px;
 }
-.inquiryList::-webkit-scrollbar-track, .detailsPanel::-webkit-scrollbar-track {
+
+.inquiryList::-webkit-scrollbar-track,
+.detailsPanel::-webkit-scrollbar-track {
   background: transparent;
 }
-.inquiryList::-webkit-scrollbar-thumb, .detailsPanel::-webkit-scrollbar-thumb {
+
+.inquiryList::-webkit-scrollbar-thumb,
+.detailsPanel::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
@@ -375,6 +379,7 @@
   .contentWrapper {
     flex-direction: column;
   }
+
   .inquiryList {
     width: 100%;
     flex-direction: row;
@@ -382,6 +387,7 @@
     overflow-y: hidden;
     padding-bottom: 8px;
   }
+
   .inquiryCard {
     width: 300px;
     flex-shrink: 0;

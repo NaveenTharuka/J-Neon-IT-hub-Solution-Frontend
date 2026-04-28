@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Mail, Phone, Trash2 } from 'lucide-react';
-import { fetchAllInquiries, updateInquiryStatus, deleteInquiry } from '../../services/inquiriesService';
 import styles from './adminInquiries.module.css';
+import { fetchAllContacts, updateContactTag, deleteContact } from '../../services/contact.api';
 
 export default function AdminInquiries() {
   const [inquiries, setInquiries] = useState([]);
@@ -12,22 +12,22 @@ export default function AdminInquiries() {
     fetchInquiries();
   }, []);
 
-const statusOrder = {
-  new: 1,
-  reviewed: 2,
-  responded: 3
-};
+  const statusOrder = {
+    new: 1,
+    reviewed: 2,
+    responded: 3
+  };
 
-const sortedInquiries = [...inquiries].sort((a, b) => {
-  const aStatus = (a.status || "").toLowerCase().trim();
-  const bStatus = (b.status || "").toLowerCase().trim();
+  const sortedInquiries = [...inquiries].sort((a, b) => {
+    const aStatus = (a.status || "").toLowerCase().trim();
+    const bStatus = (b.status || "").toLowerCase().trim();
 
-  return statusOrder[aStatus] - statusOrder[bStatus];
-});
+    return statusOrder[aStatus] - statusOrder[bStatus];
+  });
 
   const fetchInquiries = async () => {
     try {
-      const data = await fetchAllInquiries();
+      const data = await fetchAllContacts();
 
       if (Array.isArray(data)) {
         setInquiries(data);
@@ -43,9 +43,9 @@ const sortedInquiries = [...inquiries].sort((a, b) => {
     }
   };
 
-  const handleStatusUpdate = async (id, status) => {
+  const updateInquiryStatus = async (id, status) => {
     try {
-      const updated = await updateInquiryStatus(id, status);
+      const updated = await updateContactTag(id, status);
 
       // update list instantly
       setInquiries(prev =>
@@ -58,22 +58,22 @@ const sortedInquiries = [...inquiries].sort((a, b) => {
     }
   };
 
-const handleDelete = async (id) => {
-  try {
-    await deleteInquiry(id);
+  const handleDelete = async (id) => {
+    try {
+      await deleteContact(id);
 
-    // remove from UI instantly
-    setInquiries(prev => prev.filter(i => i.id !== id));
+      // remove from UI instantly
+      setInquiries(prev => prev.filter(i => i.id !== id));
 
-    // clear selection if deleted item was selected
-    if (selectedId === id) {
-      setSelectedId(null);
+      // clear selection if deleted item was selected
+      if (selectedId === id) {
+        setSelectedId(null);
+      }
+
+    } catch (err) {
+      console.error("Delete failed", err);
     }
-
-  } catch (err) {
-    console.error("Delete failed", err);
-  }
-};
+  };
   const selectedInquiry = inquiries.find(i => i.id === selectedId);
 
   const getStatusClass = (status) => {
@@ -142,7 +142,7 @@ const handleDelete = async (id) => {
                   className={styles.actionSelect}
                   value={selectedInquiry.status}
                   onChange={(e) =>
-                    handleStatusUpdate(selectedInquiry.id, e.target.value)
+                    updateInquiryStatus(selectedInquiry.id, e.target.value)
                   }
                 >
                   <option value="new">Mark as New</option>
@@ -150,12 +150,12 @@ const handleDelete = async (id) => {
                   <option value="responded">Mark as Responded</option>
                 </select>
 
-<button
-  className={styles.deleteBtn}
-  onClick={() => handleDelete(selectedInquiry.id)}
->
-  <Trash2 size={16} />
-</button>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => handleDelete(selectedInquiry.id)}
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchAllServices, deleteService } from '../services/services.api';
+import { fetchAllServices, deleteService } from '../../../services/services.api';
 import styles from './AdminServicesList.module.css';
 
 const AdminServicesList = () => {

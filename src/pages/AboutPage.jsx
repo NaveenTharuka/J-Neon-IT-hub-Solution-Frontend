@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { Link } from 'react-router-dom'
-
+import useScrollFadeIn from '../hooks/useScrollFadeIn'
 const imgCeo = "http://localhost:3845/assets/78059306baf512b76c441d11a13d79452686de16.png"
 const imgCto = "http://localhost:3845/assets/eba13ed5e06c6a80ea4e6df07691c7e943c9eb47.png"
 const imgCoo = "http://localhost:3845/assets/335492fa8e12da0d169c9e44e4dada3f78facad2.png"
@@ -14,22 +14,23 @@ const timeline = [
 ]
 
 const leadership = [
-    { 
-        name: 'Anton Jaan Jenushan Miranda', 
-        title: 'FOUNDER & CEO', 
-        img: imgCeo, 
-        desc: 'Visionary architect with 15+ years in high-scale infrastructure.' 
+    {
+        name: 'Anton Jaan Jenushan Miranda',
+        title: 'FOUNDER & CEO',
+        img: imgCeo,
+        desc: 'Visionary architect with 15+ years in high-scale infrastructure.'
     }
 ]
 
 export default function AboutPage() {
+    useScrollFadeIn();
     return (
         <>
             <Navbar />
             <main className="page">
                 {/* ── Hero ── */}
                 <section className="about-hero">
-                    <div className="about-hero__content">
+                    <div className="about-hero__content fade-in">
                         <h1 className="about-hero__title">
                             FORCE <br />
                             <span>BEHIND THE TECH</span>
@@ -43,7 +44,7 @@ export default function AboutPage() {
 
                 {/* ── Mission & Vision ── */}
                 <section className="about-mission">
-                    <div className="about-mission__container">
+                    <div className="about-mission__container fade-in">
                         {/* Mission */}
                         <div className="about-mission__col about-mission__col--right">
                             <div className="about-mission__label-row">
@@ -81,7 +82,7 @@ export default function AboutPage() {
 
                 {/* ── Our Journey Timeline ── */}
                 <section className="about-journey">
-                    <div className="about-journey__container">
+                    <div className="about-journey__container fade-in">
                         <div className="about-journey__header">
                             <span className="section-tag">The Minds</span>
                             <h2 className="about-journey__title">OUR <span>JOURNEY</span></h2>
@@ -105,7 +106,7 @@ export default function AboutPage() {
 
                 {/* ── Leadership ── */}
                 <section className="about-leadership">
-                    <div className="about-leadership__container">
+                    <div className="about-leadership__container fade-in">
                         <div className="about-leadership__header">
                             <span className="section-tag">The Minds</span>
                             <h2 className="about-leadership__title">LEADERSHIP</h2>
@@ -126,7 +127,7 @@ export default function AboutPage() {
 
                 {/* ── CTA ── */}
                 <section className="about-cta">
-                    <div className="about-cta__container">
+                    <div className="about-cta__container fade-in">
                         <span className="section-tag">Let's Build Something Together</span>
                         <h2 className="about-cta__title">
                             READY TO<br />

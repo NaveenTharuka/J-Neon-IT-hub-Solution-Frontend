@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage'
 import PortfolioPage from './pages/PortfolioPage'
 import ServicesPage from './pages/ServicesPage'
 import ServiceDetailWebPage from './pages/ServiceDetailWebDev'
+import ProtectedRoute from './pages/security'
 
 // --- Admin Imports ---
 import AdminLayout from './layouts/AdminLayout'
@@ -25,15 +26,15 @@ import AdminMedia from './pages/admin/AdminMedia'
 
 import AdminServicePlansList from "./pages/admin/services/AdminServicePlansList";
 import AdminServicePlansForm from "./pages/admin/services/AdminServicePlansForm";
-
-import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
-
+import OAuthSuccess from './pages/OAuthSuccess'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
+
   return null
 }
 
@@ -41,38 +42,153 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+
       <Routes>
+
+        {/* ---------------- PUBLIC ROUTES ---------------- */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/services/consultation" element={<ServiceContactPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/services" element={<ServicesPage />} />
-
-        {/* Dynamic service detail route */}
         <Route path="/services/:slug" element={<ServiceDetailWebPage />} />
 
-        {/* --- Admin Routes --- */}
-        <Route path="/admin/portfolio" element={<AdminLayout><AdminPortfolioList /></AdminLayout>} />
-        <Route path="/admin/portfolio/create" element={<AdminLayout><AdminPortfolioForm /></AdminLayout>} />
-        <Route path="/admin/portfolio/edit/:id" element={<AdminLayout><AdminPortfolioForm isEdit /></AdminLayout>} />
+        {/* ---------------- ADMIN ROUTES (PROTECTED) ---------------- */}
 
-        <Route path="/admin/services" element={<AdminLayout><AdminServicesList /></AdminLayout>} />
-        <Route path="/admin/services/add" element={<AdminLayout><AdminAddService /></AdminLayout>} />
-        <Route path="/admin/services/edit/:id" element={<AdminLayout><AdminEditService /></AdminLayout>} />
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route
+          path="/admin/portfolio"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminPortfolioList />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/admin/inquiries" element={<AdminLayout><AdminInquiries /></AdminLayout>} />
-        <Route path="/admin/users" element={<AdminLayout><AdminUsers /></AdminLayout>} />
-        <Route path="/admin/media" element={<AdminLayout><AdminMedia /></AdminLayout>} />+
+        <Route
+          path="/admin/portfolio/create"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminPortfolioForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/admin/services/:serviceId/plans/add" element={<AdminLayout><AdminServicePlansForm /></AdminLayout>} />
+        <Route
+          path="/admin/portfolio/edit/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminPortfolioForm isEdit />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/services"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminServicesList />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/services/add"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminAddService />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/services/edit/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminEditService />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/inquiries"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminInquiries />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminUsers />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/media"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminMedia />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/services/:serviceId/plans"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminServicePlansList />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/services/:serviceId/plans/add"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminServicePlansForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/admin/services/:serviceId/plans/edit/:planId"
-          element={<AdminLayout><AdminServicePlansForm /></AdminLayout>}
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <AdminServicePlansForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
         />
-        <Route path="/admin/analytics" element={<AdminLayout><AnalyticsDashboard /></AdminLayout>} />
 
-        <Route path="/admin/services/:serviceId/plans" element={<AdminLayout><AdminServicePlansList /></AdminLayout>} />
       </Routes>
     </>
   )

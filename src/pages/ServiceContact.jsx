@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { api } from '../services/api'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { createContact } from '../services/contact.api'
 
 export default function ServiceContactPage() {
 
@@ -35,11 +35,11 @@ export default function ServiceContactPage() {
         setStatus(null)
 
         try {
-            const response = await api.post('/contact/post', {
+            await createContact({
                 name: formData.name,
                 email: formData.email,
                 message: formData.message
-            })
+            });
 
             setStatus('success')
             setFormData({

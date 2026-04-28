@@ -156,7 +156,18 @@ export default function ServiceDetailWebDev() {
             <main className="page">
                 <section className="svc-detail-hero">
                     <h1 className="svc-detail-hero__title">
-                        <span>{service?.title?.toUpperCase() || 'SERVICE'}</span>
+                        {(() => {
+                            const raw = service?.title?.toUpperCase() || 'SERVICE';
+                            const parts = raw.split(' ');
+                            if (parts.length === 1) return <span className="title-first">{parts[0]}</span>;
+                            return (
+                                <>
+                                    <span className="title-first">{parts[0]}</span>
+                                    <br />
+                                    <span className="title-rest">{parts.slice(1).join(' ')}</span>
+                                </>
+                            );
+                        })()}
                     </h1>
                     <p className="svc-detail-hero__desc">{service?.shortDescription}</p>
                     {service?.longDescription && (
@@ -165,9 +176,11 @@ export default function ServiceDetailWebDev() {
                 </section>
 
                 <section className="svc-detail-plans">
-                    <h2 className="svc-detail-plans__title">
-                        {hasPlans ? 'Pricing Plans' : 'Service Information'}
-                    </h2>
+                    <div className="svc-detail-plans__tagline">
+                        <h2 className="svc-detail-plans__heading">
+                            {hasPlans ? 'Pricing Plans' : 'Service Information'}
+                        </h2>
+                    </div>
 
                     {!hasPlans && !loading && (
                         <div style={{ textAlign: 'center', padding: '60px 20px' }}>
