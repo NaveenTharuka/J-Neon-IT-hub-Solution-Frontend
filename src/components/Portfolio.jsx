@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
-import { getPortfolioItems } from '../services/portfolioService';
+import { getPortfolioItems, getPortfolioImages } from '../services/portfolioService';
 
 const projects = [
     { label: 'Cyber Defense', desc: 'Security & Compliance', tag: 'Security & Compliance' },
@@ -10,39 +10,56 @@ const projects = [
 
 export default function Portfolio({ limit, showViewAll }) {
     const [dynamicProjects, setDynamicProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProjects = async () => {
             try {
                 const data = await getPortfolioItems();
                 if (data && data.length > 0) {
-                    const mapped = data.map(item => ({
-                        label: item.title,
-                        desc: item.summary || 'Portfolio',
-                        tag: item.summary || 'Portfolio'
+                    const mapped = await Promise.all(data.map(async item => {
+                        let imageUrl = null;
+                        try {
+                            const images = await getPortfolioImages(item.id);
+                            if (images && images.length > 0) imageUrl = images[0].imageUrl;
+                        } catch (e) { }
+                        return {
+                            label: item.title,
+                            desc: item.summary || 'Portfolio',
+                            tag: item.summary || 'Portfolio',
+                            imageUrl
+                        };
                     }));
                     setDynamicProjects(mapped);
                 }
             } catch (err) {
                 console.error("Failed to fetch homepage portfolio items", err);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProjects();
     }, []);
 
-    const sourceData = dynamicProjects.length > 0 ? dynamicProjects : projects;
+    const sourceData = loading ? [] : (dynamicProjects.length > 0 ? dynamicProjects : projects);
     const displayed = limit ? sourceData.slice(0, limit) : sourceData;
 
     return (
-        <section className="portfolio" id="portfolio">
-            <div className="portfolio__container">
+        <section className="portfolio" id="portfolio" style={{ position: 'relative' }}>
+            <div className="bg-watermark">PORTFOLIO</div>
+            <div className="portfolio__container" style={{ position: 'relative', zIndex: 2 }}>
                 <h2 className="portfolio__title fade-in">OUR <span>PORTFOLIO</span></h2>
                 <p className="portfolio__subtitle fade-in">
                     Showcase of our digital craftsmanship. Where complex problems meet elegant, high-performance solutions.
                 </p>
 
                 <div className="portfolio__grid">
-                    {displayed.map((p, i) => (
+                    {loading && (
+                        <div className="fade-in" style={{ textAlign: 'center', padding: '50px 0', color: 'var(--color-text-muted)', gridColumn: '1 / -1' }}>
+                            Loading portfolio items...
+                        </div>
+                    )}
+                    {!loading && displayed.map((p, i) => (
                         <div
                             className="portfolio-card fade-in"
                             key={i}
