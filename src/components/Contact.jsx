@@ -1,135 +1,19 @@
 import { useState } from 'react'
-
-const SERVICE_CONFIG = {
-    '': {
-        fields: [],
-    },
-    'Web Development': {
-        tag: '// web_dev',
-        fields: [
-            {
-                id: 'website_type',
-                label: 'Website Type',
-                type: 'select',
-                options: ['E-Commerce Store', 'Portfolio / Branding', 'Corporate / Business', 'SaaS Platform', 'Custom Web App'],
-                placeholder: 'Select website type',
-            },
-            {
-                id: 'budget',
-                label: 'Budget Range',
-                type: 'select',
-                options: ['< $1,000', '$1,000 – $5,000', '$5,000 – $15,000', '$15,000 – $50,000', '$50,000+'],
-                placeholder: 'Select your budget',
-            },
-            {
-                id: 'timeline',
-                label: 'Project Timeline',
-                type: 'select',
-                options: ['ASAP (< 1 month)', '1 – 3 months', '3 – 6 months', '6 months+', 'Flexible'],
-                placeholder: 'Select timeline',
-            },
-        ],
-    },
-    'Digital Marketing': {
-        tag: '// marketing',
-        fields: [
-            {
-                id: 'channels',
-                label: 'Current Marketing Channels',
-                type: 'select',
-                options: ['None yet', 'Social Media only', 'SEO / Blog', 'Paid Ads (Google/Meta)', 'Email Marketing', 'Multiple channels'],
-                placeholder: 'Select current channels',
-            },
-            {
-                id: 'monthly_budget',
-                label: 'Monthly Marketing Budget',
-                type: 'select',
-                options: ['< $500', '$500 – $2,000', '$2,000 – $10,000', '$10,000+'],
-                placeholder: 'Select monthly budget',
-            },
-            {
-                id: 'target',
-                label: 'Primary Target Audience',
-                type: 'text',
-                placeholder: 'e.g. Small businesses in the US, 25-40 year olds',
-            },
-        ],
-    },
-    'Data Analytics': {
-        tag: '// analytics',
-        fields: [
-            {
-                id: 'data_sources',
-                label: 'Primary Data Sources',
-                type: 'select',
-                options: ['Spreadsheets / CSV', 'SQL Database', 'Cloud Data Warehouse', 'Multiple systems', 'Not sure yet'],
-                placeholder: 'Select data sources',
-            },
-            {
-                id: 'team_size',
-                label: 'Team / Company Size',
-                type: 'select',
-                options: ['1 – 10', '11 – 50', '51 – 200', '200+'],
-                placeholder: 'Select team size',
-            },
-            {
-                id: 'goal',
-                label: 'Primary Analytics Goal',
-                type: 'select',
-                options: ['Reporting Dashboards', 'Predictive Modeling', 'Business Intelligence (BI)', 'Real-time Monitoring', 'Data Pipeline / ETL'],
-                placeholder: 'Select primary goal',
-            },
-        ],
-    },
-    'Mobile Dev': {
-        tag: '// mobile',
-        fields: [
-            {
-                id: 'platform',
-                label: 'Target Platform',
-                type: 'select',
-                options: ['iOS (Apple)', 'Android (Google)', 'Both iOS & Android', 'Cross-platform (React Native / Flutter)'],
-                placeholder: 'Select platform',
-            },
-            {
-                id: 'app_type',
-                label: 'App Type',
-                type: 'select',
-                options: ['Consumer App', 'Business / Enterprise App', 'E-Commerce', 'On-demand / Delivery', 'Social / Community', 'Other'],
-                placeholder: 'Select app type',
-            },
-            {
-                id: 'backend',
-                label: 'Existing Backend / API?',
-                type: 'select',
-                options: ['Yes — we have one', 'No — need full stack', 'Partially built', 'Not sure'],
-                placeholder: 'Select backend status',
-            },
-        ],
-    },
-}
-
-const SERVICES = Object.keys(SERVICE_CONFIG).filter(k => k !== '')
+import { createContact } from '../services/contact.api'
 
 export default function Contact() {
-    const [selectedService, setSelectedService] = useState('')
     const [formData, setFormData] = useState({})
     const [submitted, setSubmitted] = useState(false)
-
-    const config = SERVICE_CONFIG[selectedService] || { fields: [] }
 
     function handleChange(e) {
         const { name, value } = e.target
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    function handleServiceChange(e) {
-        setSelectedService(e.target.value)
-        setFormData(prev => ({ name: prev.name, email: prev.email, company: prev.company, message: prev.message }))
-    }
-
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
+        console.log(formData)
+        await createContact(formData)
         setSubmitted(true)
     }
 
@@ -144,7 +28,7 @@ export default function Contact() {
                         Initiate <span>Communication</span>
                     </h2>
                     <p className="contact__subtitle">
-                        Select the service you're interested in and we'll route your inquiry to the right specialist team.
+                        Get in touch with our team and we'll respond within 24 hours.
                     </p>
                 </div>
 
@@ -162,132 +46,55 @@ export default function Contact() {
                                 </div>
                                 <h3>Message Transmitted</h3>
                                 <p>We've received your inquiry and will respond within 24 hours.</p>
-                                <button className="contact__reset" onClick={() => { setSubmitted(false); setFormData({}); setSelectedService('') }}>
+                                <button className="contact__reset" onClick={() => { setSubmitted(false); setFormData({}); }}>
                                     Send Another →
                                 </button>
                             </div>
                         ) : (
                             <form className="contact__form" onSubmit={handleSubmit} noValidate>
 
-                                {/* Base fields */}
-                                <div className="form-row form-row--2">
-                                    <div className="form-group">
-                                        <label className="form-label" htmlFor="name">Name</label>
-                                        <input
-                                            className="form-input"
-                                            id="name"
-                                            name="name"
-                                            type="text"
-                                            placeholder="John Smith"
-                                            value={formData.name || ''}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label" htmlFor="email">Email</label>
-                                        <input
-                                            className="form-input"
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            placeholder="john@company.com"
-                                            value={formData.email || ''}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
+                                {/* Name */}
                                 <div className="form-group">
-                                    <label className="form-label" htmlFor="company">Company / Organisation</label>
+                                    <label className="form-label" htmlFor="name">Name</label>
                                     <input
                                         className="form-input"
-                                        id="company"
-                                        name="company"
+                                        id="name"
+                                        name="name"
                                         type="text"
-                                        placeholder="ACME Corp"
-                                        value={formData.company || ''}
+                                        placeholder="John Smith"
+                                        value={formData.name || ''}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
 
-                                {/* Service selector */}
+                                {/* Email */}
                                 <div className="form-group">
-                                    <label className="form-label" htmlFor="service">
-                                        Service Enquiry
-                                        <span className="form-label-required">*</span>
-                                    </label>
-                                    <div className="form-select-wrap">
-                                        <select
-                                            className="form-select"
-                                            id="service"
-                                            name="service"
-                                            value={selectedService}
-                                            onChange={handleServiceChange}
-                                            required
-                                        >
-                                            <option value="">— Select a service —</option>
-                                            {SERVICES.map(s => (
-                                                <option key={s} value={s}>{s}</option>
-                                            ))}
-                                        </select>
-                                        <svg className="form-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M6 9l6 6 6-6" /></svg>
-                                    </div>
+                                    <label className="form-label" htmlFor="email">Email</label>
+                                    <input
+                                        className="form-input"
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        placeholder="john@company.com"
+                                        value={formData.email || ''}
+                                        onChange={handleChange}
+                                        required
+                                    />
                                 </div>
-
-                                {/* Dynamic service-specific fields */}
-                                {selectedService && (
-                                    <div className="form-dynamic-section">
-                                        <div className="form-dynamic-tag">{config.tag}</div>
-                                        <div className="form-dynamic-fields">
-                                            {config.fields.map(field => (
-                                                <div className="form-group" key={field.id}>
-                                                    <label className="form-label" htmlFor={field.id}>{field.label}</label>
-                                                    {field.type === 'select' ? (
-                                                        <div className="form-select-wrap">
-                                                            <select
-                                                                className="form-select"
-                                                                id={field.id}
-                                                                name={field.id}
-                                                                value={formData[field.id] || ''}
-                                                                onChange={handleChange}
-                                                            >
-                                                                <option value="">{field.placeholder}</option>
-                                                                {field.options.map(o => (
-                                                                    <option key={o} value={o}>{o}</option>
-                                                                ))}
-                                                            </select>
-                                                            <svg className="form-select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M6 9l6 6 6-6" /></svg>
-                                                        </div>
-                                                    ) : (
-                                                        <input
-                                                            className="form-input"
-                                                            id={field.id}
-                                                            name={field.id}
-                                                            type="text"
-                                                            placeholder={field.placeholder}
-                                                            value={formData[field.id] || ''}
-                                                            onChange={handleChange}
-                                                        />
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
 
                                 {/* Message */}
                                 <div className="form-group">
-                                    <label className="form-label" htmlFor="message">Requirements / Message</label>
+                                    <label className="form-label" htmlFor="message">Message</label>
                                     <textarea
                                         className="form-textarea"
                                         id="message"
                                         name="message"
                                         rows={4}
-                                        placeholder="Describe your project or requirements in detail..."
+                                        placeholder="Tell us about your project or inquiry..."
                                         value={formData.message || ''}
                                         onChange={handleChange}
+                                        required
                                     />
                                 </div>
 
@@ -295,7 +102,7 @@ export default function Contact() {
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
                                         <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                                     </svg>
-                                    TRANSMIT MESSAGE
+                                    SEND MESSAGE
                                 </button>
                             </form>
                         )}
