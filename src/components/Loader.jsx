@@ -122,8 +122,9 @@ const StyledWrapper = styled.div`
   }
 
   .loading-text {
+    font-family: 'Syne', sans-serif;
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #183153;
     letter-spacing: 1px;
     animation: pulseText 1.5s ease-in-out infinite;
