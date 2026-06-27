@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { getPortfolioItems, getPortfolioImages } from '../services/portfolioService'
 import useScrollFadeIn from '../hooks/useScrollFadeIn'
+import Loader from '../components/Loader'
 
 const imgCheckmark = "http://localhost:3845/assets/0ccf5697b7ad90af92894ea1fb9741db5ca8be25.svg"
 
@@ -188,8 +189,14 @@ export default function PortfolioPage() {
 
                 {/* ── Projects ── */}
                 {loading && (
-                    <div className="fade-in" style={{ textAlign: 'center', padding: '50px 0', color: 'var(--color-text-muted)' }}>
-                        Loading portfolio items...
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: '400px',
+                        width: '100%'
+                    }}>
+                        <Loader />
                     </div>
                 )}
                 {!loading && displayProjects.map((project, i) => {

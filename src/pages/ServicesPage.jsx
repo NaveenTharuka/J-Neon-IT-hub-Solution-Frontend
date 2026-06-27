@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import reactLogo from '../assets/image.png'
 import { fetchAllServices, fetchServiceById } from '../services/services.api'
 import useScrollFadeIn from '../hooks/useScrollFadeIn'
+import Loader from '../components/Loader'
 
 const imgEllipse = reactLogo
 const defaultIcon = reactLogo
@@ -19,15 +20,11 @@ export default function ServicesPage() {
         const fetchData = async () => {
             try {
                 const res = await fetchAllServices();
-
                 const data = res?.data || res;
-
                 const activeServices = Array.isArray(data)
                     ? data.filter(item => item.active === true)
                     : [];
-
                 setServices(activeServices);
-
             } catch (error) {
                 console.log(error);
                 setError(error);
@@ -53,7 +50,15 @@ export default function ServicesPage() {
                         </p>
                     </div>
 
-                    <div className="fade-in" style={{
+                    {loading ? (<div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minHeight: '400px',
+                        width: '100%'
+                    }}>
+                        <Loader />
+                    </div>) : (<div className="fade-in" style={{
                         display: error ? 'none' : 'block',
                         marginTop: '50px'
                     }}>
@@ -63,57 +68,49 @@ export default function ServicesPage() {
                         <p className="services-page-tagline__sub">
                             Flexible packages designed for startups, growing businesses, and enterprise-grade applications.
                         </p>
-                    </div>
+                    </div>)}
                 </section>
 
 
 
-                <section style={{
-                    display: error ? 'none' : 'block'
-                }}>
-                    <div className="services-page-grid__container fade-in" style={{ marginBottom: '50px' }}>
-
-                        {loading && <div className="loading-state">Loading services...</div>}
-
-                        {!loading && !error && services.map(service => (
-                            <div key={service.id} className="svc-card">
-                                <div
-                                    className="svc-card__ellipse"
-                                    aria-hidden="true"
-                                />
-
-                                <div className="svc-card__body">
-                                    <h3 className="svc-card__title">{service.title}</h3>
-                                    <p className="svc-card__desc">{service.shortDescription}</p>
-                                    <Link
-                                        to={`/services/${service.id}`}
-                                        className="svc-card__cta"
-                                        onClick={() => localStorage.setItem('selectedService', JSON.stringify(service))}
-                                    >
-                                        Get Your Quote
-                                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                                            <path d="M4 10h12M10 4l6 6-6 6" />
-                                        </svg>
-                                    </Link>
+                {/* Services Grid */}
+                {!loading && !error && (
+                    <section>
+                        <div className="services-page-grid__container fade-in" style={{ marginBottom: '50px' }}>
+                            {services.map(service => (
+                                <div key={service.id} className="svc-card">
+                                    <div
+                                        className="svc-card__ellipse"
+                                        aria-hidden="true"
+                                    />
+                                    <div className="svc-card__body">
+                                        <h3 className="svc-card__title">{service.title}</h3>
+                                        <p className="svc-card__desc">{service.shortDescription}</p>
+                                        <Link
+                                            to={`/services/${service.id}`}
+                                            className="svc-card__cta"
+                                            onClick={() => localStorage.setItem('selectedService', JSON.stringify(service))}
+                                        >
+                                            Get Your Quote
+                                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                                                <path d="M4 10h12M10 4l6 6-6 6" />
+                                            </svg>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
-
+                {/* Error State */}
                 {error && (
                     <div style={{
-                        position: 'relative',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 9999,
-                        pointerEvents: 'none'
+                        minHeight: '400px',
+                        width: '100%'
                     }}>
                         <div style={{
                             background: 'rgba(255, 255, 255, 0.1)',

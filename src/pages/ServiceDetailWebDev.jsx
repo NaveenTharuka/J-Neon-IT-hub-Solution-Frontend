@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import reactLogo from '../assets/image.png'
 import { fetchAllServices, fetchServicePlans } from '../services/services.api'
+import Loader from '../components/Loader'
 
 export default function ServiceDetailWebDev() {
     const { slug } = useParams()
@@ -105,14 +106,17 @@ export default function ServiceDetailWebDev() {
             <>
                 <Navbar />
                 <main className="page">
-                    <div className="loading-container" style={{
-                        textAlign: 'center',
-                        padding: '100px 20px',
-                        fontSize: '18px',
-                        color: 'var(--color-text-muted)'
-                    }}>
-                        Loading service details...
-                    </div>
+                    {loading && (
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            minHeight: '400px',
+                            width: '100%'
+                        }}>
+                            <Loader />
+                        </div>
+                    )}
                 </main>
                 <Footer />
             </>

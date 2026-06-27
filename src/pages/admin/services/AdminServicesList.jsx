@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchAllServices, deleteService } from '../../../services/services.api';
 import styles from './AdminServicesList.module.css';
+import Loader from '../../../components/Loader';
 
 const AdminServicesList = () => {
     const [services, setServices] = useState([]);
@@ -66,7 +67,15 @@ const AdminServicesList = () => {
             </div>
 
             {loading ? (
-                <div className={styles.loading}>Loading services...</div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '400px',
+                    width: '100%'
+                }}>
+                    <Loader />
+                </div>
             ) : error ? (
                 <div className={styles.error}>{error}</div>
             ) : (

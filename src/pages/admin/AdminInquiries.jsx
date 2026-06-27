@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Calendar, Mail, Phone, Trash2 } from 'lucide-react';
 import styles from './adminInquiries.module.css';
 import { fetchAllContacts, updateContactTag, deleteContact } from '../../services/contact.api';
+import Loader from '../../components/Loader';
 
 export default function AdminInquiries() {
   const [inquiries, setInquiries] = useState([]);
@@ -91,7 +92,6 @@ export default function AdminInquiries() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
 
   return (
     <div className={styles.container}>
@@ -102,7 +102,15 @@ export default function AdminInquiries() {
         </div>
       </header>
 
-      <div className={styles.contentWrapper}>
+      {loading ? <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '400px',
+        width: '100%'
+      }}>
+        <Loader />
+      </div> : (<div className={styles.contentWrapper}>
         {/* LEFT PANEL */}
         <div className={styles.inquiryList}>
           {sortedInquiries.map(inq => (
@@ -191,7 +199,7 @@ export default function AdminInquiries() {
             <p>Select an inquiry to view details.</p>
           </div>
         )}
-      </div>
+      </div>)}
     </div>
   );
 }

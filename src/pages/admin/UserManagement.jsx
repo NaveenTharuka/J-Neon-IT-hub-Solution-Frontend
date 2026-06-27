@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import styles from "./adminUsers.module.css";
 import { api } from "../../services/api";
+import Loader from "../../components/Loader";
 
 export default function AdminUsers() {
 
@@ -120,7 +121,15 @@ export default function AdminUsers() {
 
       {/* Users */}
       {loading ? (
-        <div className={styles.loading}>Loading users...</div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '400px',
+          width: '100%'
+        }}>
+          <Loader />
+        </div>
       ) : (
         <div className={styles.userGrid}>
           {users.length > 0 ? (

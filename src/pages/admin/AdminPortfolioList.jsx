@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Edit2, Trash2, ExternalLink } from 'lucide-react';
 import { getPortfolioItems, deletePortfolioItem, getPortfolioImages } from '../../services/portfolioService';
 import styles from './adminPortfolioList.module.css';
+import Loader from '../../components/Loader';
 
 export default function AdminPortfolioList() {
     const navigate = useNavigate();
@@ -79,7 +80,15 @@ export default function AdminPortfolioList() {
             </header>
 
             {loading ? (
-                <div className={styles.loading}>Loading projects...</div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '400px',
+                    width: '100%'
+                }}>
+                    <Loader />
+                </div>
             ) : projects.length === 0 ? (
                 <div className={styles.emptyState}>No projects found. Click "Add Project" to start.</div>
             ) : (

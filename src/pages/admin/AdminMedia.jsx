@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { mediaService } from '../../services/mediaService';
 import { Trash2, Upload, FileImage } from 'lucide-react';
 import styles from './adminMedia.module.css';
+import Loader from '../../components/Loader';
 
 export default function AdminMedia() {
     const [mediaList, setMediaList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [uploading, setUploading] = useState(false);
-    
+
     // Form state
     const [file, setFile] = useState(null);
     const [altText, setAltText] = useState('');
@@ -89,9 +90,9 @@ export default function AdminMedia() {
                 <form className={styles.uploadForm} onSubmit={handleUpload}>
                     <div className={styles.formGroup}>
                         <label className={styles.label}>Select File *</label>
-                        <input 
-                            type="file" 
-                            className={styles.fileInput} 
+                        <input
+                            type="file"
+                            className={styles.fileInput}
                             onChange={handleFileChange}
                             accept="image/*"
                             required
@@ -99,9 +100,9 @@ export default function AdminMedia() {
                     </div>
                     <div className={styles.formGroup}>
                         <label className={styles.label}>Alt Text (Optional)</label>
-                        <input 
-                            type="text" 
-                            className={styles.input} 
+                        <input
+                            type="text"
+                            className={styles.input}
                             placeholder="Descriptive text"
                             value={altText}
                             onChange={(e) => setAltText(e.target.value)}
@@ -109,16 +110,16 @@ export default function AdminMedia() {
                     </div>
                     <div className={styles.formGroup}>
                         <label className={styles.label}>Caption (Optional)</label>
-                        <input 
-                            type="text" 
-                            className={styles.input} 
+                        <input
+                            type="text"
+                            className={styles.input}
                             placeholder="Image caption"
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
                         />
                     </div>
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         className={styles.uploadBtn}
                         disabled={!file || uploading}
                     >
@@ -129,7 +130,15 @@ export default function AdminMedia() {
             </div>
 
             {loading ? (
-                <div className={styles.loading}>Loading media...</div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    minHeight: '400px',
+                    width: '100%'
+                }}>
+                    <Loader />
+                </div>
             ) : (
                 <div className={styles.grid}>
                     {mediaList.map((media) => (
@@ -138,7 +147,7 @@ export default function AdminMedia() {
                                 {media.mimeType && media.mimeType.startsWith('image/') ? (
                                     <img src={media.fileUrl} alt={media.altText || media.fileName} className={styles.image} />
                                 ) : (
-                                    <div style={{display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+                                    <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                         <FileImage size={48} color="#cbd5e0" />
                                     </div>
                                 )}
@@ -149,8 +158,8 @@ export default function AdminMedia() {
                                     {media.mimeType || 'Unknown'} • {formatBytes(media.fileSizeBytes)}
                                 </p>
                             </div>
-                            <button 
-                                className={styles.deleteBtn} 
+                            <button
+                                className={styles.deleteBtn}
                                 onClick={() => handleDelete(media.id)}
                                 title="Delete"
                             >
