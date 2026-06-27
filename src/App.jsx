@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage'
 import PortfolioPage from './pages/PortfolioPage'
 import ServicesPage from './pages/ServicesPage'
 import ServiceDetailWebPage from './pages/ServiceDetailWebDev'
+import OAuthSuccess from './pages/OAuthSuccess'
 
 // --- Admin Imports ---
 import AdminLayout from './layouts/AdminLayout'
@@ -42,6 +43,7 @@ export default function App() {
     <>
       <ScrollToTop />
       <Routes>
+        <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/services/consultation" element={<ServiceContactPage />} />
         <Route path="/" element={<HomePage />} />

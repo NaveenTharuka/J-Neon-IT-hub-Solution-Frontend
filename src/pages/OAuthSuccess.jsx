@@ -9,7 +9,7 @@ export default function OAuthSuccess() {
     useEffect(() => {
         console.log("Setting login state")
         localStorage.setItem("user", "loggedIn")
-        navigate("/admin/portfolio", { replace: true })
+        navigate("/admin/analytics", { replace: true })
     }, [])
 
     return <p>Logging you in...</p>
